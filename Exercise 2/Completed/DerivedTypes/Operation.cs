@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DerivedTypes
 {
@@ -13,11 +17,7 @@ namespace DerivedTypes
             SecondNumber = n2;
         }
 
-        public virtual string Calculate()
-        {
-            return "";
-        }
+        public abstract string Calculate();
 
     }
 }
-
