@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 1: Create a derived class</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>Learning C# with Xamarin: Inheritance and Polymorphism</header>
+
+   	<section id="main">
+
+		<h1 id="page-title"></h1>
+
+		<h2>Duration</h2>
+		<p>10 minutes</p>
+
+		<!-- - - - - - - - - Goals - - - - - - - - -->
+
+		<h2 id="goals">Lab goals</h2>
+		<p>
+	     In this exercise, you will take an existing class which performs an <code class="prettyprint">Add</code> operation and extract a base class from it to use with other types of mathematical operations. You will then create a few additional derived classes and use them in program.
+     </p>
+
+    <h2>Required Assets</h2>
+    <p>
+      There is a <b>Exercise 1</b> folder included with this lab exercise which contains a starter project you should use to get started, and a completed project if you'd like to compare your work to the solution.
+    </p>
+
+
+		<!-- - - - - - - - - Steps - - - - - - - - -->
+
+      <h1 id="steps">Steps</h1>
+      <p>
+        This is a individual exercise, intended to be done on your own, use the step-by-step instructions to complete the exercise.
+      </p>
+
+  		<h2>Open the starter project</h2>
+      <p>
+         As a first step, let's open the starter project.
+      </p>
+
+  		<ol>
+         <li>
+            Launch  Visual Studio and open the <b>DerivedTypes</b> solution in the <b>Exercise 1/Start</b> folder.
+         </li>
+         <li>
+            Open the <b>AddOperation.cs</b> file located in the <b>DerivedTypes</b> project.
+         </li>
+
+<pre class="codeblock prettyprint">
+namespace DerivedTypes
+{
+    public class AddOperation
+    {
+        public int FirstNumber { get; set; }
+        public int SecondNumber { get; set; }
+
+        public AddOperation(int n1, int n2)
+        {
+            FirstNumber = n1;
+            SecondNumber = n2;
+        }
+
+        public string Calculate()
+        {
+            return string.Format("{0} + {1} = {2}",
+               FirstNumber, SecondNumber,
+               FirstNumber + SecondNumber);
+        }
+    }
+}
+</pre>
+
+         It is a simple class which has two properties that hold integer values. These two properties are initialized in a constructor that takes two integer values. Finally, it has a single <code class="prettyprint">Calculate</code> method which returns a string representing the performed calculation.
+
+         <li>
+            Run the application. It should display the calculation:
+         </li>
+
+         <img class="indent-none" src="./res/images/lab1-start.png" />
+      </ol>
+
+      <h2>Create a base class from <b>AddOperation</b></h2>
+      <p>
+         Our goal is to create another operation for <code class="prettyprint">Multiply</code> which will work exactly the same way. Since this new operation will also work with two integers, it makes sense to extract the common logic and properties into a <b>base class</b> in C#. Here we will break the <code class="prettyprint">AddOperation</code> class into two related classes and verify that it still functions properly.
+      </p>
+
+      <ol>
+         <li>
+            Add a new empty class to the <b>DerivedTypes</b> project and name the file <b>Operation.cs</b>.
+               <ul class="indent-none">
+                  <li>
+                     Recall that one way to do this is to first select the DerrivedTypes project in the solution pane (not the top-level solution), and then use the menu <b>File &gt; New File</b>.
+                     Alternatively, you can right-click on the project and select <b>Add &gt; New File</b> to show the New Item dialog.
+                  </li>
+                  <li>
+                     From the New Item dialog, select &quot;Empty Class&quot; or &quot;Visual C# Class&quot; in the <b>General</b> section.
+                  </li>
+               </ul>
+         </li>
+
+         <li>
+            Open the <b>Operation.cs</b> file - there should already be a class named <code class="prettyprint">Operation</code> in it.
+         </li>
+
+         <li>
+            Copy the <code class="prettyprint">FirstNumber</code> and <code class="prettyprint">SecondNumber</code> properties from the <code class="prettyprint">AddOperation</code> class into this new class.
+         </li>
+
+         <li>
+            Modify the constructor to take two integers and initialize the two properties - just like <code class="prettyprint">AddOperation</code> does.
+         </li>
+
+         <li>
+            Finally, remove the two properties from <code class="prettyprint">AddOperation</code> and change the class definition to indicate that it <em>derives</em> from <code class="prettyprint">Operation</code> - check the slides if you need help with the syntax, or expand the below code hint.
+         </li>
+
+<p><a href="#" onclick="toggleCode(this,'baseClass');return false;" class="uiitem">Show Code</a>
+<div class="indent-none" id="baseClass" style="display:none;">
+<pre class="prettyprint">
+public class AddOperation <span class="highlight">: Operation</span>
+{
+</pre></div></p>
+
+         <li>
+            Try to compile the application - notice that you get an error:
+         </li>
+
+         <img class="indent-none" src="./res/images/lab1-error-message.PNG" width="900"/>
+
+         <li>
+            See if you can fix the error, remember in the slides when we discussed calling non-default constructors?
+         </li>
+
+         <li>
+            Once the error is corrected, you can remove the two property setters in the <code class="prettyprint">AddOperation</code> constructor. You can verify your code against the below code hint if desired.
+         </li>
+
+         <li>
+            Run the code to make sure it all still works properly - you should get <em>exactly</em> the same results as before.
+         </li>
+
+<p><a href="#" onclick="toggleCode(this,'finalAddOp');return false;" class="uiitem">Show Code</a>
+<div class="indent-none" id="finalAddOp" style="display:none;">
+<pre class="prettyprint">
+namespace DerivedTypes
+{
+    public class AddOperation : Operation
+    {
+        public AddOperation(int n1, int n2)
+            <span class="highlight">: base (n1,n2)</span>
+        {
+        }
+
+        ...
+   }
+}
+</pre></div></p>
+
+      </ol>
+
+      <h2>Create a derived class</h2>
+      <p>
+         Next, let's create a <code class="prettyprint">MultiplyOperation</code> class. You can use the existing <code class="prettyprint">AddOperation</code> as a guide, or follow these instructions.
+      </p>
+
+      <ol>
+         <li>
+            Create a new class named <b>MultiplyOperation.cs</b> in the project.
+               <ul class="indent-none">
+                  <li>
+                     Have it derive from <code class="prettyprint">Operation</code>.
+                  </li>
+                  <li>
+                     Create a parameterized constructor with two numbers and pass them into the base class.
+                  </li>
+                  <li>
+                     Copy the <code class="prettyprint">Calculate</code> method from <code class="prettyprint">AddOperation</code>, but change it to be a multiplication result.
+                  </li>
+               </ul>
+         </li>
+
+<p><a href="#" onclick="toggleCode(this,'multiOp');return false;" class="uiitem">Show Code</a>
+<div class="indent-none" id="multiOp" style="display:none;">
+<pre class="prettyprint">
+public class MultiplyOperation : Operation
+{
+   public MultiplyOperation(int n1, int n2)
+      :base (n1,n2)
+   {
+   }
+
+   public string Calculate()
+   {
+      return string.Format("{0} X {1} = {2}",
+          FirstNumber, SecondNumber,
+          FirstNumber * SecondNumber);
+   }
+}
+</pre></div></p>
+      </ol>
+
+      <h2>Use your derived class</h2>
+      <p>
+         Finally, let's modify the program logic to use <em>both</em> the <code class="prettyprint">AddOperation</code> and new <code class="prettyprint">MultiplyOperation</code> together.
+      </p>
+
+      <ol>
+         <li>
+            Open the <b>Program.cs</b> file and locate the <code>TODO:</code> comment after the <code class="prettyprint">AddOperation</code> usage.
+         </li>
+
+         <li>
+            Using the <code class="prettyprint">AddOperation</code> code just above this as a model, use your new <code class="prettyprint">MultiplyOperation</code> to multiply two numbers and print the result into the console.
+         </li>
+
+<p><a href="#" onclick="toggleCode(this,'useMulti');return false;" class="uiitem">Show Code</a>
+<div class="indent-none" id="useMulti" style="display:none;">
+<pre class="prettyprint">
+ // TODO: perform a "Multiply" operation
+MultiplyOperation multiply = new MultiplyOperation(10, 20);
+Console.WriteLine(multiply.Calculate());
+</pre></div></p>
+
+         <li>
+            Run the application to verify you see the proper results - there should now be <em>two</em> operations printed to the screen.
+         </li>
+
+         <img class="indent-none" src="./res/images/lab1-final.PNG" />
+
+      </ol>
+
+      <h2>Optional: Create a 3rd derived class</h2>
+      <p>
+         If you have time, try creating another operation-derived class; for example a <code class="prettyprint">SubtractOperation</code> or <code class="prettyprint">ModuloDivisionOperation</code>. Make sure to add code to utilize your operation into <b>Program.cs</b>.
+      </p>
+
+      <!-- - - - - - - - - Summary - - - - - - - - -->
+      <h1>Summary</h1>
+      <p>
+   		Congratulations! You have successfully utilized class derivation to share common behavior between multiple classes. This is a very powerful feature of C# that allows us to reuse tested, working code in different ways. There is a completed project in the lab materials if you'd like to examine the final results.
+      </p>
+
+   	<div class="align-right">
+			<a href="../Start%20Here.html">Go Back</a>
+		</div>
+
+	</section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft.</footer>
+</body>
+</html>
